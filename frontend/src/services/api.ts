@@ -1,0 +1,10 @@
+import axios from 'axios';
+import { AuthResponse, ApiResponse, Course, User } from '../types/global';
+const BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api';
+const api = axios.create({ baseURL: BASE_URL, headers: { 'Content-Type': 'application/json' }, });
+export const login = async (email: string, password: string): Promise<ApiResponse<AuthResponse>> => { const response = await api.post('/auth/login', { email, password }); return response.data; };
+export const register = async (userData: Omit<User, 'id' | 'createdAt' | 'updatedAt'> & { password: string }): Promise<ApiResponse<User>> => { const response = await api.post('/auth/register', userData); return response.data; };
+export const fetchCourses = async (): Promise<ApiResponse<Course[]>> => { const response = await api.get('/courses'); return response.data; };
+export const fetchCourseById = async (id: string): Promise<ApiResponse<Course>> => { const response = await api.get(`/courses/${id}`); return response.data; };
+export const fetchUserById = async (id: string): Promise<ApiResponse<User>> => { const response = await api.get(`/users/${id}`); return response.data; };
+export default api;
